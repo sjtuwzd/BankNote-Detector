@@ -40,11 +40,8 @@ def sift(path):
     name = path
 
     MIN_POINT = 20
-    chunk = 1024
-    FLANN_INDEX_KDTREE = 5
 
     cv2.useOptimized()
-    cap = cv2.VideoCapture(0)
     detector = cv2.xfeatures2d.SIFT_create()
     norm = cv2.NORM_L1
     matcher = cv2.BFMatcher(norm)
@@ -143,7 +140,7 @@ def sift(path):
                     cv2.circle(vis, (int(x2 + w1), int(y2)), 2, col, -1)
         count += 1
     cv2.imwrite("output.jpg", vis)
-    cv2.imshow('find_obj', vis)
+    cv2.imshow('442_project_detect_banknote', vis)
     cv2.waitKey(100000)
 
 
@@ -254,7 +251,9 @@ def video_detect():
                         # cv2.fillPoly(img2, [corners - [300, 0]], (0, 0, 0))
                         kp2, desc2 = remove_kp(kp2, desc2, p2)
                         font = cv2.FONT_HERSHEY_SIMPLEX
-                        cv2.putText(vis, showText, (corners[0][0], corners[0][1]), font, 1, (0, 0, 255), 2)
+                        point1 = int(float(corners[0][0] + corners[2][0]) / 2.0)
+                        point2 = int(float(corners[0][1] + corners[2][1]) / 2.0)
+                        cv2.putText(vis, showText, (point1, point2), font, 1, (0, 0, 255), 2)
 
                     for (x1, y1), (x2, y2), inlier in zip(p1, p2, status):
                         if inlier:
@@ -265,7 +264,7 @@ def video_detect():
                 else:
                     detected_list = detected_list[0:i]
                     vis_final[h_title:, :] = vis
-                    cv2.imshow('find_obj', vis_final)
+                    cv2.imshow('442_project_detect_banknote', vis_final)
                     break
 
         img1 = img_list[searchIndex]
@@ -292,7 +291,9 @@ def video_detect():
                 cv2.polylines(vis, [corners], True, (0, 255, 0))
                 # cv2.fillPoly(img2, [corners - [300, 0]], (0, 0, 0))
                 font = cv2.FONT_HERSHEY_SIMPLEX
-                cv2.putText(vis, showText, (corners[0][0], corners[0][1]), font, 1, (0, 0, 255), 2)
+                point1 = int(float(corners[0][0] + corners[2][0])/2.0)
+                point2 = int(float(corners[0][1] + corners[2][1]) / 2.0)
+                cv2.putText(vis, showText, (point1, point2), font, 1, (0, 0, 255), 2)
 
             for (x1, y1), (x2, y2), inlier in zip(p1, p2, status):
                 if inlier:
@@ -309,7 +310,7 @@ def video_detect():
 
         # print vis_final
         vis_final[h_title:, :] = vis
-        cv2.imshow('find_obj', vis_final)
+        cv2.imshow('442_project_detect_banknote', vis_final)
 
         searchIndex += 1
 
